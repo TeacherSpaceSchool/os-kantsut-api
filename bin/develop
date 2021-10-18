@@ -1,0 +1,85 @@
+#!/usr/bin/env node
+
+let app = require('../app').app;
+let serverGQL = require('../app').serverGQL;
+let debug = require('debug')('os-cantsyt-new-api:server');
+let http = require('http');
+const start = require('../module/start');
+
+start.start();
+
+let port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/*let port1 = normalizePort(process.env.PORT || '443');
+app1.set('port', port1);*/
+
+let server = http.createServer(app);
+serverGQL.installSubscriptionHandlers(server)
+
+//let server1 = https.createServer(options, app1);
+
+server.listen(port, () => {
+    console.log(`? Server ready at http://${process.env.URL}:${port}${serverGQL.graphqlPath}`)
+    console.log(`? Subscriptions ready at ws://${process.env.URL}:${port}${serverGQL.subscriptionsPath}`)
+});
+server.on('error', onError);
+server.on('listening', onListening);
+
+module.exports = server;
+
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    var bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+    var addr = server.address();
+    var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+}
+
