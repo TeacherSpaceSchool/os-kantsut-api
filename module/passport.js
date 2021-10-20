@@ -98,8 +98,9 @@ const getuser = async (req, res, func) => {
 const verifydeuserGQL = async (req, res) => {
     return new Promise((resolve) => { passport.authenticate('jwt', function (err, user) {
         try{
-            console.log('verifydeuserGQL1', JSON.stringify(req.cookies.pinCode), JSON.stringify(user), JSON.stringify(user.pinCode), )
+            console.log('verifydeuserGQL1' )
             user.checkedPinCode = req.cookies&&req.cookies.pinCode===user.pinCode
+            console.log('verifydeuserGQL2' )
             resolve(user)
         } catch (err) {
             console.error(err)
