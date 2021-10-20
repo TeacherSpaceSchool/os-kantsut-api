@@ -96,6 +96,7 @@ const getuser = async (req, res, func) => {
 }
 
 const verifydeuserGQL = async (req, res) => {
+    console.log(new Date(), 'verifydeuserGQL0')
     return new Promise((resolve) => { passport.authenticate('jwt', function (err, user) {
         try{
             console.log('verifydeuserGQL1' )
