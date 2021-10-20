@@ -31,11 +31,14 @@ let start = () => {
     jwtOptions.secretOrKey=jwtsecret;
     passport.use(
         new JwtStrategy(jwtOptions, function (payload, done) {
+            console.log('JwtStrategy1', JSON.stringify(payload))
             User.findOne({login:payload.login}, (err, user) => {
+                console.log('JwtStrategy2', JSON.stringify(err), JSON.stringify(user))
                 if (err) {
                     return done(err)
                 }
                 if (user&&user.status==='active') {
+                    console.log('JwtStrategy3', JSON.stringify(user))
                     return done(null, user)
                 } else {
                     return done(null, false)
@@ -97,6 +100,7 @@ const getuser = async (req, res, func) => {
 const verifydeuserGQL = async (req, res) => {
     return new Promise((resolve) => { passport.authenticate('jwt', async function (err, user) {
         try{
+            console.log('verifydeuserGQL1', req.cookies.toString(), JSON.stringify(req.cookies.pinCode), JSON.stringify(user), JSON.stringify(user.pinCode), )
             user.checkedPinCode = req.cookies&&req.cookies.pinCode===user.pinCode
             resolve(user)
         } catch (err) {
