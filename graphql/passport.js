@@ -17,6 +17,7 @@ const query = `
 
 const resolvers = {
     getStatus: async(parent, args, {user}) => {
+        console.log('getStatus:', JSON.stringify(user))
         return user
     },
     sendPinCode: async(parent, {pinCode}, {user, res}) => {
