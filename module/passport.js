@@ -36,8 +36,8 @@ let start = () => {
                     return done(err)
                 }
                 if (user&&user.status==='active') {
+                    console.log(new Date(), 'JwtStrategy11')
                     return done(null, user)
-                    console.log('JwtStrategy11')
                 } else {
                     return done(null, false)
                 }
