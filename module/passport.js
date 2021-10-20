@@ -36,6 +36,7 @@ let start = () => {
                     return done(err)
                 }
                 if (user&&user.status==='active') {
+                    console.log('JwtStrategy' )
                     return done(null, user)
                 } else {
                     return done(null, false)
@@ -197,12 +198,6 @@ const signinuserGQL = (req, res) => {
                     const token = await jwt.sign(payload, jwtsecret); //здесь создается JWT
                     await res.clearCookie('jwt');
                     await res.cookie('jwt', token, {maxAge: 500*24*60*60*1000 });
-                    console.log('signinuserGQL', {
-                        role: user.role,
-                        status: user.status,
-                        login: user.login,
-                        _id: user._id
-                    } )
                     resolve({
                         role: user.role,
                         status: user.status,
