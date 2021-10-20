@@ -290,6 +290,7 @@ const run = (app)=>{
             },
         },
         context: async (ctx) => {
+            console.log('index0', !!ctx.connection, !!ctx, !!ctx.req)
             if (ctx.connection) {
                 return ctx.connection.context;
             }
