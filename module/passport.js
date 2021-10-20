@@ -36,8 +36,8 @@ let start = () => {
                     return done(err)
                 }
                 if (user&&user.status==='active') {
-                    console.log('JwtStrategy', done, !!user )
                     return done(null, user)
+                    console.log('JwtStrategy11')
                 } else {
                     return done(null, false)
                 }
@@ -97,7 +97,6 @@ const getuser = async (req, res, func) => {
 
 const verifydeuserGQL = async (req, res) => {
     return new Promise((resolve) => { passport.authenticate('jwt', function (err, user) {
-        console.log('verifydeuserGQL0', !!req.cookies )
         try{
             console.log('verifydeuserGQL1', JSON.stringify(req.cookies.pinCode), JSON.stringify(user), JSON.stringify(user.pinCode), )
             user.checkedPinCode = req.cookies&&req.cookies.pinCode===user.pinCode

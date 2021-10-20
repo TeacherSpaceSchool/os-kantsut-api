@@ -294,7 +294,9 @@ const run = (app)=>{
                 return ctx.connection.context;
             }
             else if(ctx&&ctx.req) {
+                console.log('index1')
                 let user = await verifydeuserGQL(ctx.req, ctx.res)
+                console.log('index2')
                 return {req: ctx.req, res: ctx.res, user: user};
             }
         },
