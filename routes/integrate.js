@@ -402,7 +402,6 @@ router.get('/out/expensereport', async (req, res, next) => {
                         .att('official', _objects[i].waybills[i1].application.official?1:0)
                         .att('comment', _objects[i].waybills[i1].application.comment)
                     for(let i2 = 0; i2<_objects[i].waybills[i1].items.length; i2++) {
-                        console.log(_objects[i].waybills[i1].items[i2])
                         waybill.ele('item')
                             .att('name', _objects[i].waybills[i1].items[i2].name)
                             .att('guid', _objects[i].waybills[i1].items[i2].GUID)
