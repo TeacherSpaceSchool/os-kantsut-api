@@ -3,7 +3,7 @@ const LocalStrategy = require('passport-local');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const jwtsecret = '@615141ViDiK141516@';
-const User = require('../models/user');
+const User1 = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 let start = () => {
@@ -14,7 +14,7 @@ let start = () => {
             session: false
         },
         function (login, password, done) {
-            User.findOne({login: login}, (err, user) => {
+            User1.findOne({login: login}, (err, user) => {
                 if (err) {
                     return done(err);
                 }
@@ -31,12 +31,12 @@ let start = () => {
     jwtOptions.secretOrKey=jwtsecret;
     passport.use(
         new JwtStrategy(jwtOptions, function (payload, done) {
-            User.findOne({login:payload.login}, (err, user) => {
+            User1.findOne({login:payload.login}, (err, user) => {
                 if (err) {
                     return done(err)
                 }
                 if (user&&user.status==='active') {
-                    console.log('JwtStrategy' )
+                    console.log('JwtStrategy', done, !!user )
                     return done(null, user)
                 } else {
                     return done(null, false)
@@ -96,7 +96,7 @@ const getuser = async (req, res, func) => {
 }
 
 const verifydeuserGQL = async (req, res) => {
-    return new Promise((resolve) => { passport.authenticate('jwt', async function (err, user) {
+    return new Promise((resolve) => { passport.authenticate('jwt', function (err, user) {
         console.log('verifydeuserGQL0', !!req.cookies )
         try{
             console.log('verifydeuserGQL1', JSON.stringify(req.cookies.pinCode), JSON.stringify(user), JSON.stringify(user.pinCode), )
@@ -160,13 +160,13 @@ const getstatus = async (req, res) => {
 
 const signupuser = async (req, res) => {
     try{
-        let _user = new User({
+        let _user = new User1({
             login: req.query.login,
             role: 'client',
             status: 'active',
             password: req.query.password,
         });
-        const user = await User.create(_user);
+        const user = await User1.create(_user);
         const payload = {
             id: user._id,
             login: user.login,
